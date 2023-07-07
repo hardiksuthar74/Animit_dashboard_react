@@ -1,19 +1,23 @@
 import { styled } from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import { Fragment } from "react";
+import Heading from "./ui/Heading";
 
 function App() {
   return (
     <Fragment>
       <GlobalStyles />
-      <H1>The wild oasis</H1>
+      <StyledApp>
+        <Heading type="h1">The wild Oasis</Heading>
+        <Heading type="h2">The wild Oasis</Heading>
+        <Heading type="h3">The wild Oasis</Heading>
+      </StyledApp>
     </Fragment>
   );
 }
 
-const H1 = styled.h1`
-  font-size: 30px;
-  font-weight: 600;
+const StyledApp = styled.main`
+  background-color: grey;
 `;
 
 export default App;
