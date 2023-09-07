@@ -1,9 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import { getCabins } from "../../services/apiCabins";
 import Spinner from "../../ui/Spinner";
-import CabinRow from "./CabinRow";
-// import CabinRow from "./CabinRow";
+import AnimeRow from "./AnimeRow";
+import { useQuery } from "@tanstack/react-query";
+import { fetchAllAnimeMethod } from "../../services/apiAnime";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -16,8 +15,8 @@ const Table = styled.div`
 
 const TableHeader = styled.header`
   display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
+  grid-template-columns: repeat(10, 1fr);
+  column-gap: 2rem;
   align-items: center;
 
   background-color: var(--color-grey-50);
@@ -29,33 +28,39 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-const CabinTable = () => {
+const AnimeTable = () => {
   const {
     isLoading,
-    data: cabins,
+    data: animes,
     error,
   } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins,
+    queryKey: ["animes"],
+    queryFn: fetchAllAnimeMethod,
   });
 
   if (isLoading) return <Spinner />;
 
+  console.log(animes);
+
   return (
     <Table role="table">
       <TableHeader role="row">
+        <div>Title</div>
+        <div>Episodes</div>
+        <div>Score</div>
+        <div>Season</div>
+        <div>Status</div>
+        <div>Synopsis</div>
+        <div>Type</div>
+        <div>Year</div>
         <div>Image</div>
-        <div>Cabin</div>
-        <div>Capacity</div>
-        <div>Price</div>
-        <div>Discount</div>
-        <div></div>
+        <div>Action</div>
       </TableHeader>
-      {cabins.map((cabin) => {
-        return <CabinRow cabin={cabin} key={cabin.id} />;
-      })}
+      {animes.map((anime) => (
+        <AnimeRow anime={anime} key={anime.id} />
+      ))}
     </Table>
   );
 };
 
-export default CabinTable;
+export default AnimeTable;

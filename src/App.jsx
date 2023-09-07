@@ -4,7 +4,6 @@ import Dashboard from "./pages/Dashboard";
 import Account from "./pages/Account";
 import Login from "./pages/Login";
 import Bookings from "./pages/Bookings";
-import Cabins from "./pages/Cabins";
 import PageNotFound from "./pages/PageNotFound";
 import Settings from "./pages/Settings";
 import Users from "./pages/Users";
@@ -14,6 +13,7 @@ import AppLayout from "./ui/AppLayout";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
+import Animes from "./pages/Animes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,7 +36,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
               <Route path="bookings" element={<Bookings />} />
-              <Route path="cabins" element={<Cabins />} />
+              <Route path="animes" element={<Animes />} />
               <Route path="settings" element={<Settings />} />
               <Route path="users" element={<Users />} />
             </Route>

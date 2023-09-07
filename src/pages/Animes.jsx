@@ -1,27 +1,27 @@
 import { Fragment, useEffect, useState } from "react";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
-import CabinTable from "../features/cabins/CabinTable";
+import AnimeTable from "../features/animes/AnimeTable";
 import Button from "../ui/Button";
-import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import CreateAnimeForm from "../features/animes/CreateAnimeForm";
 
-function Cabins() {
+const Animes = () => {
   const [showForm, setShowForm] = useState(false);
   return (
     <Fragment>
       <Row type="horizontal">
-        <Heading as="h1">All cabins</Heading>
+        <Heading as="h1">All Animes</Heading>
         <p>Filter / sort</p>
       </Row>
       <Row>
-        <CabinTable />
+        <AnimeTable />
         <Button onClick={() => setShowForm((show) => !show)}>
-          Add new cabin
+          Add new Anime
         </Button>
-        {showForm && <CreateCabinForm />}
+        {showForm && <CreateAnimeForm />}
       </Row>
     </Fragment>
   );
-}
+};
 
-export default Cabins;
+export default Animes;

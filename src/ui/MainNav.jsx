@@ -70,15 +70,21 @@ function MainNav() {
           </StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/cabins">
+          <StyledNavLink to="/animes">
             <HiOutlineHomeModern />
-            <span>Cabins</span>
+            <span>Animes</span>
           </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/users">
             <HiOutlineUsers />
             <span>Users</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/settings">
+            <HiOutlineCog6Tooth />
+            <span>Jikan Anime</span>
           </StyledNavLink>
         </li>
         <li>
