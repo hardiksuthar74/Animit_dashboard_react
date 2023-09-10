@@ -40,8 +40,6 @@ const AnimeTable = () => {
 
   if (isLoading) return <Spinner />;
 
-  console.log(animes);
-
   return (
     <Table role="table">
       <TableHeader role="row">

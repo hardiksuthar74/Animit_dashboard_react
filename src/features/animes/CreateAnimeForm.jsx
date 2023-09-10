@@ -6,7 +6,7 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addAnimeMethod } from "../../services/apiAnime";
+import { addAnimeMethod, updateAnimeMethod } from "../../services/apiAnime";
 import { toast } from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
 
@@ -18,7 +18,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
   const queryClient = useQueryClient();
 
   const { mutate, isLoading: isAdding } = useMutation({
-    mutationFn: addAnimeMethod,
+    mutationFn: isEditSession ? updateAnimeMethod : addAnimeMethod,
     onSuccess: () => {
       toast.success("Anime Added Successfully");
       queryClient.invalidateQueries({
@@ -40,7 +40,12 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
 
   const onSubmit = (data) => {
     try {
-      mutate(data);
+      let dataToSend = { ...data, id: editId };
+      if (data.image !== animeToEdit.image) {
+        dataToSend = { ...dataToSend, image: data.image[0] };
+      }
+      console.log(dataToSend);
+      mutate(dataToSend);
     } catch (err) {}
   };
 
@@ -134,15 +139,12 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         />
       </FormRow>
 
-      <FormRow
-        label="image"
-        //  error={errors?.image?.message}
-      >
+      <FormRow label="image" error={errors?.image?.message}>
         <FileInput
           id="image"
           accept="image/*"
           {...register("image", {
-            required: "This field is required",
+            required: isEditSession ? false : "This field is required",
           })}
         />
       </FormRow>

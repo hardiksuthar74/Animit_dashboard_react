@@ -45,6 +45,7 @@ const Discount = styled.div`
 `;
 
 const AnimeRow = ({ anime }) => {
+  const url = "http://127.0.0.1:5000/animes";
   const [showForm, setShowForm] = useState(false);
 
   const {
@@ -83,10 +84,10 @@ const AnimeRow = ({ anime }) => {
         <Cabin>{score}</Cabin>
         <Cabin>{season}</Cabin>
         <Cabin>{status}</Cabin>
-        <Cabin>{synopsis}</Cabin>
+        <Cabin>{synopsis.slice(0, 10)}....</Cabin>
         <Cabin>{type}</Cabin>
         <Cabin>{year}</Cabin>
-        <Img src={image} />
+        <Img src={`${url}/${image}`} />
         <div>
           <button
             disabled={isDeleting}

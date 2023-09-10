@@ -2,7 +2,8 @@ const url = "http://127.0.0.1:5000";
 
 const fetchAllAnimeMethod = async () => {
   try {
-    const response = await fetch(`${url}/animes`);
+    // const response = await fetch(`http://127.0.0.1:5000/animes`);
+    const response = await fetch(`${url}/animes/`);
 
     const data = await response.json();
 
@@ -32,23 +33,62 @@ const deleteSingleAnime = async (id) => {
   }
 };
 
-const addAnimeMethod = async (form) => {
+const addAnimeMethod = async (data) => {
+  const formData = new FormData();
+  for (const fieldName in data) {
+    if (data.hasOwnProperty(fieldName)) {
+      if (fieldName === "image") {
+        formData.append("image", data.image);
+      } else {
+        formData.append(fieldName, data[fieldName]);
+      }
+    }
+  }
+
   try {
     const response = await fetch(`${url}/animes`, {
       method: "POST",
-      body: JSON.stringify(form),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
+      body: formData,
     });
 
-    const data = await response.json();
+    const addedAnime = await response.json();
 
-    console.log(data);
-    return data?.data;
+    console.log(addedAnime);
+    return addedAnime?.data;
+  } catch (error) {
+    throw new Error("Anime could not be added");
+  }
+};
+const updateAnimeMethod = async (data) => {
+  const formData = new FormData();
+  for (const fieldName in data) {
+    if (data.hasOwnProperty(fieldName)) {
+      if (fieldName === "image") {
+        formData.append("image", data.image);
+      } else {
+        formData.append(fieldName, data[fieldName]);
+      }
+    }
+  }
+
+  try {
+    const response = await fetch(`${url}/animes/update`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const addedAnime = await response.json();
+
+    console.log(addedAnime);
+    return addedAnime?.data;
   } catch (error) {
     throw new Error("Anime could not be added");
   }
 };
 
-export { fetchAllAnimeMethod, deleteSingleAnime, addAnimeMethod };
+export {
+  fetchAllAnimeMethod,
+  deleteSingleAnime,
+  addAnimeMethod,
+  updateAnimeMethod,
+};
