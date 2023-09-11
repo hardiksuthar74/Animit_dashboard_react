@@ -2,7 +2,6 @@ const url = "http://127.0.0.1:5000";
 
 const fetchAllAnimeMethod = async () => {
   try {
-    // const response = await fetch(`http://127.0.0.1:5000/animes`);
     const response = await fetch(`${url}/animes/`);
 
     const data = await response.json();
@@ -53,7 +52,6 @@ const addAnimeMethod = async (data) => {
 
     const addedAnime = await response.json();
 
-    console.log(addedAnime);
     return addedAnime?.data;
   } catch (error) {
     throw new Error("Anime could not be added");
@@ -78,8 +76,6 @@ const updateAnimeMethod = async (data) => {
     });
 
     const addedAnime = await response.json();
-
-    console.log(addedAnime);
     return addedAnime?.data;
   } catch (error) {
     throw new Error("Anime could not be added");

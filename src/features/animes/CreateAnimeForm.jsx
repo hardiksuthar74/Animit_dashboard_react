@@ -9,28 +9,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addAnimeMethod, updateAnimeMethod } from "../../services/apiAnime";
 import { toast } from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
+import { useAddAnime } from "./useAddAnime";
+import { useUpdateAnime } from "./useUpdateAnime";
 
 const CreateAnimeForm = ({ animeToEdit = {} }) => {
   const { id: editId, ...editValues } = animeToEdit;
 
+  const { isAdding, addAnime } = useAddAnime();
+  const { isUpdating, updateAnime } = useUpdateAnime();
+
+  const isWorking = isAdding || isUpdating;
+
   const isEditSession = Boolean(editId);
-
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading: isAdding } = useMutation({
-    mutationFn: isEditSession ? updateAnimeMethod : addAnimeMethod,
-    onSuccess: () => {
-      toast.success("Anime Added Successfully");
-      queryClient.invalidateQueries({
-        queryKey: ["animes"],
-      });
-
-      reset();
-    },
-    onError: (err) => {
-      toast.error("Something Went Wrong");
-    },
-  });
 
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
@@ -44,8 +34,14 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
       if (data.image !== animeToEdit.image) {
         dataToSend = { ...dataToSend, image: data.image[0] };
       }
-      console.log(dataToSend);
-      mutate(dataToSend);
+
+      isEditSession
+        ? updateAnime(dataToSend)
+        : addAnime(dataToSend, {
+            onSuccess: (data) => {
+              reset();
+            },
+          });
     } catch (err) {}
   };
 
@@ -55,7 +51,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Input
           type="text"
           id="title"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("title", {
             required: "This field is required",
           })}
@@ -66,7 +62,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Input
           type="number"
           id="episodes"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("episodes", {
             required: "This field is required",
           })}
@@ -77,7 +73,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Input
           type="number"
           id="score"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("score", {
             required: "This field is required",
           })}
@@ -88,7 +84,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Input
           type="text"
           id="season"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("season", {
             required: "This field is required",
           })}
@@ -99,7 +95,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Textarea
           type="text"
           id="synopsis"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("synopsis", {
             required: "This field is required",
           })}
@@ -110,7 +106,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Input
           type="text"
           id="status"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("status", {
             required: "This field is required",
           })}
@@ -121,7 +117,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Input
           type="text"
           id="type"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("type", {
             required: "This field is required",
           })}
@@ -132,7 +128,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Input
           type="number"
           id="year"
-          disabled={isAdding}
+          disabled={isWorking}
           {...register("year", {
             required: "This field is required",
           })}
@@ -153,7 +149,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button disabled={isAdding}>
+        <Button disabled={isWorking}>
           {isEditSession ? "Update Anime" : "Add Anime"}
         </Button>
       </FormRow>

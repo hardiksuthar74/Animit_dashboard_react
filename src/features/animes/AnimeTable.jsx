@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import AnimeRow from "./AnimeRow";
-import { useQuery } from "@tanstack/react-query";
-import { fetchAllAnimeMethod } from "../../services/apiAnime";
+import { useAnime } from "./useAnime";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -29,15 +28,7 @@ const TableHeader = styled.header`
 `;
 
 const AnimeTable = () => {
-  const {
-    isLoading,
-    data: animes,
-    error,
-  } = useQuery({
-    queryKey: ["animes"],
-    queryFn: fetchAllAnimeMethod,
-  });
-
+  const { isLoading, animes } = useAnime();
   if (isLoading) return <Spinner />;
 
   return (

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteSingleAnime } from "../../services/apiAnime";
-import { toast } from "react-hot-toast";
 import { useState } from "react";
 import CreateAnimeForm from "./CreateAnimeForm";
+import { useDeleteAnime } from "./useDeleteAnime";
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import { useAddAnime } from "./useAddAnime";
 
 const TableRow = styled.div`
   display: grid;
@@ -47,6 +47,7 @@ const Discount = styled.div`
 const AnimeRow = ({ anime }) => {
   const url = "http://127.0.0.1:5000/animes";
   const [showForm, setShowForm] = useState(false);
+  const { isDeleting, deleteAnime } = useDeleteAnime();
 
   const {
     id: animeId,
@@ -60,21 +61,6 @@ const AnimeRow = ({ anime }) => {
     type,
     year,
   } = anime;
-
-  const queryClient = useQueryClient();
-
-  const { isLoading: isDeleting, mutate } = useMutation({
-    mutationFn: deleteSingleAnime,
-    onSuccess: () => {
-      toast.success("Anime Deleted Successfully");
-      queryClient.invalidateQueries({
-        queryKey: ["animes"],
-      });
-    },
-    onError: (err) => {
-      toast.error("Something Went Wrong");
-    },
-  });
 
   return (
     <>
@@ -93,10 +79,10 @@ const AnimeRow = ({ anime }) => {
             disabled={isDeleting}
             onClick={() => setShowForm((show) => !show)}
           >
-            Update
+            <HiPencil />
           </button>
-          <button disabled={isDeleting} onClick={() => mutate(animeId)}>
-            Delete
+          <button disabled={isDeleting} onClick={() => deleteAnime(animeId)}>
+            <HiTrash />
           </button>
         </div>
       </TableRow>

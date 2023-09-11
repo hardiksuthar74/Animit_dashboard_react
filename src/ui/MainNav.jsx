@@ -87,12 +87,6 @@ function MainNav() {
             <span>Jikan Anime</span>
           </StyledNavLink>
         </li>
-        <li>
-          <StyledNavLink to="/settings">
-            <HiOutlineCog6Tooth />
-            <span>Settings</span>
-          </StyledNavLink>
-        </li>
       </NavList>
     </nav>
   );
