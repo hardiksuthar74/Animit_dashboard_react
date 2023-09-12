@@ -1,18 +1,14 @@
-import styled from "styled-components";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addAnimeMethod, updateAnimeMethod } from "../../services/apiAnime";
-import { toast } from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
 import { useAddAnime } from "./useAddAnime";
 import { useUpdateAnime } from "./useUpdateAnime";
 
-const CreateAnimeForm = ({ animeToEdit = {} }) => {
+const CreateAnimeForm = ({ animeToEdit = {}, onClose }) => {
   const { id: editId, ...editValues } = animeToEdit;
 
   const { isAdding, addAnime } = useAddAnime();
@@ -40,13 +36,17 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
         : addAnime(dataToSend, {
             onSuccess: (data) => {
               reset();
+              onClose?.();
             },
           });
     } catch (err) {}
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      type={onClose ? "modal" : "regular"}
+    >
       <FormRow label="title" error={errors?.title?.message}>
         <Input
           type="text"
@@ -146,7 +146,7 @@ const CreateAnimeForm = ({ animeToEdit = {} }) => {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset">
+        <Button onClick={() => onClose?.()} variation="secondary" type="reset">
           Cancel
         </Button>
         <Button disabled={isWorking}>
