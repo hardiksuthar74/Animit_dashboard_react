@@ -32,7 +32,11 @@ const CreateAnimeForm = ({ animeToEdit = {}, onClose }) => {
       }
 
       isEditSession
-        ? updateAnime(dataToSend)
+        ? updateAnime(dataToSend, {
+            onSuccess: (data) => {
+              onClose?.();
+            },
+          })
         : addAnime(dataToSend, {
             onSuccess: (data) => {
               reset();

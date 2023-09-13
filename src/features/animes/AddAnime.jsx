@@ -1,21 +1,25 @@
-import { useState } from "react";
 import Button from "../../ui/Button";
 import CreateAnimeForm from "./CreateAnimeForm";
 import Modal from "../../ui/Modal";
 
 const AddAnime = () => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
-
   return (
     <div>
-      <Button onClick={() => setIsOpenModal((show) => !show)}>
-        Add new Anime
-      </Button>
-      {isOpenModal && (
-        <Modal onClose={() => setIsOpenModal(false)}>
-          <CreateAnimeForm onClose={() => setIsOpenModal(false)} />
-        </Modal>
-      )}
+      <Modal>
+        <Modal.Open opens="anime-form">
+          <Button>Add new Anime</Button>
+        </Modal.Open>
+        <Modal.Window name="anime-form">
+          <CreateAnimeForm />
+        </Modal.Window>
+
+        {/* <Modal.Open opens="table">
+        <Button>Show Table</Button>
+        </Modal.Open>
+        <Modal.Window name="table">
+        <CreateAnimeForm />
+      </Modal.Window> */}
+      </Modal>
     </div>
   );
 };
